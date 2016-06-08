@@ -47,55 +47,6 @@ public class HTML {
     }
 
     /**
-     * word 2 bbcode
-     * @param input
-     * @return
-     */
-    public static String covertWord2bbcode(String input){
-
-        String bbcode = input;
-
-        for (Map.Entry entry: HtmlTagMaps.getWordHtmlMap().entrySet())
-        {
-            bbcode = bbcode.replaceAll(entry.getKey().toString(), entry.getValue().toString());
-        }
-
-        return bbcode;
-    }
-
-    public void check(String input)
-    {
-        int check = 0;
-
-        for (int i = 0; i < input.length(); i++)
-        {
-            if (input.charAt(i) == '<')
-                check++;
-            else if (input.charAt(i) == '>')
-                check--;
-        }
-
-        if (check != 0)
-        {
-            System.out.print("==========There are some errors in your code, please check it!");
-            return;
-        }
-
-        String links[] = URLChecks.findHTMLlinks(input);
-
-        for (int i = 0; i < links.length; i++)
-        {
-            if (!URLChecks.exists(links[i]))
-            {
-                System.out.print("=========One or more links may be invalid.");
-                return;
-            }
-        }
-
-        System.out.print("============Everything's ok!");
-    }
-
-    /**
      *
      * @param contentStr 要转换的字符串
      * @param baseUri  网站基础网址
@@ -261,7 +212,7 @@ public class HTML {
         Document.OutputSettings outputSettings = new Document.OutputSettings();
 
         String cleanStr = Jsoup.clean(contentStr, uri, whitelist, outputSettings);
-        result = covertWord2bbcode(cleanStr);
+        result = convert(cleanStr);
 
         return result;
     }

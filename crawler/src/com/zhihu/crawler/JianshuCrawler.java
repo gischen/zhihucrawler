@@ -18,7 +18,7 @@ public class JianshuCrawler implements PageProcessor {
 
     private static Logger logger = Logger.getLogger(JianshuCrawler.class);
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
-    static String[] articleOkIds = {"bd2a2270e71c","03e8fb9d182f","df923dc4464e","c82fc791cffe"};
+    static String[] articleOkIds = {"bd2a2270e71c"};
     static String author = "石羽";
 
     @Override
