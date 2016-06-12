@@ -34,15 +34,13 @@ public class HTML {
      * @param input
      * @return
      */
-    public static String convert(String input)
+    public static String convert(String input,Map<String,String> htmlmap)
     {
         String bbcode = input;
-
-        for (Map.Entry entry: HtmlTagMaps.getHTMLMap().entrySet())
+        for (Map.Entry entry: htmlmap.entrySet())
         {
             bbcode = bbcode.replaceAll(entry.getKey().toString(), entry.getValue().toString());
         }
-
         return bbcode;
     }
 
@@ -173,7 +171,8 @@ public class HTML {
 
         String cleanStr = Jsoup.clean(doc.html(), uri, whitelist, outputSettings);
 
-        String result = convert(cleanStr);
+        Map<String,String> htmlmap = HtmlTagMaps.getHTMLMap();
+        String result = convert(cleanStr,htmlmap);
 
         return result;
     }
@@ -212,7 +211,11 @@ public class HTML {
         Document.OutputSettings outputSettings = new Document.OutputSettings();
 
         String cleanStr = Jsoup.clean(contentStr, uri, whitelist, outputSettings);
-        result = convert(cleanStr);
+
+        Map<String,String> htmlmap = HtmlTagMaps.getHTMLMap();
+        htmlmap.put("<p>(.*?)</p>","$1\n");
+        htmlmap.put("&middot;","    ·");
+        result = convert(cleanStr,htmlmap);
 
         return result;
     }

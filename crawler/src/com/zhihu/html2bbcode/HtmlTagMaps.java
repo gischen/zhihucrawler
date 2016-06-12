@@ -14,6 +14,10 @@ public class HtmlTagMaps
         Map<String, String> htmlMap = new HashMap<String, String>();
 
         htmlMap.put("<a(.*?)href=\"(.*?)\"(.*?)>(.*?)</a>","[url=$2]$4[/url]");
+        htmlMap.put("<a>","");//新浪
+        htmlMap.put("</a>","");//新浪
+        htmlMap.put("<a></a>","");
+
         htmlMap.put("<img(.*?)src=\"(.*?)\"(.*?)>","[img]$2[/img]");
         htmlMap.put("<br(.*?)>", "");
 
