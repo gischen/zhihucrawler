@@ -18,41 +18,51 @@ public class PPTTransMain {
 
     public static void main(String[] args) {
 
-        ArrayList<Blogbean> blogs = new ArrayList<Blogbean>();
-
         //ppt image folder location
         String filePath = "d:/test";
-        String folderName = "书籍推荐";
-        //excel file name
-        String excelName  = folderName;
-        //document file keyword
-        String keyword = "png";
+        ArrayList<File> dirs = FileNameExt.getDirectories(filePath);
 
-        File folder = new File(filePath+"/"+folderName);
-        Image2bbcode image2bbcode = new Image2bbcode();
-        String result = "";
+        String authorName = "穆天龙";
+        String topic = "ArcGIS Python";
 
-        File[] files = FileNameExt.searchFile(folder, keyword);
-        for (int i = 0; i < files.length; i++) {
-            int num = i+1;
-            File file = new File(filePath+"/"+folderName+"/"+"幻灯片"+num+"."+keyword);
-            logger.info(file.getAbsolutePath() + "\n");
-            String imageurl = image2bbcode.addFile(file);
-            String imagebbcodeurl = "[img]"+imageurl+"[/img]";
-            result += imagebbcodeurl+"\n";
+        for (File dir: dirs) {
+
+            String folderName = dir.getName();
+            //excel file name
+            String excelName  = folderName;
+            //document file keyword
+            String keyword = "png";
+
+            File folder = new File(filePath+"/"+folderName);
+            Image2bbcode image2bbcode = new Image2bbcode();
+            String result = "";
+
+            File[] files = FileNameExt.searchFile(folder, keyword);
+            for (int i = 0; i < files.length; i++) {
+                int num = i+1;
+                File file = new File(filePath+"/"+folderName+"/"+"幻灯片"+num+"."+keyword);
+                logger.info(file.getAbsolutePath() + "\n");
+                String imageurl = image2bbcode.addFile(file);
+                String imagebbcodeurl = "[img]"+imageurl+"[/img]";
+                result += imagebbcodeurl+"\n";
+            }
+            if(!result.equals("")) {
+
+                ArrayList<Blogbean> blogs = new ArrayList<Blogbean>();
+                Blogbean blogbean = new Blogbean();
+                blogbean.setTitle(folderName);
+                blogbean.setContent(result);
+                blogbean.setTopic(topic);
+                blogbean.setSource("");
+                blogbean.setAuthor(authorName);
+
+                blogs.add(blogbean);
+
+                Excel excel = new Excel();
+                excel.exportBlogToExcel(blogs, filePath, excelName + ".xls");
+
+                logger.info("======" + folder + " all documents Transform ok! and excel is ok! and excel paht is " + filePath +"/"+ excelName + ".xls");
+            }
         }
-
-        Blogbean blogbean = new Blogbean();
-        blogbean.setTitle(folderName);
-        blogbean.setContent(result);
-        blogbean.setSource("");
-        blogbean.setAuthor("ArcGIS知乎");
-
-        blogs.add(blogbean);
-
-        Excel excel = new Excel();
-        excel.exportBlogToExcel(blogs,filePath, excelName+".xls");
-
-        logger.info("======"+folder+" all documents Transform ok! and excel is ok! and excel paht is "+filePath+excelName+".xls");
     }
 }

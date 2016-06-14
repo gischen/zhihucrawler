@@ -19,8 +19,8 @@ public class CsdnBlogCrawler implements PageProcessor {
 
     private static Logger logger = Logger.getLogger(CsdnBlogCrawler.class);
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
-    static String[] articleOkIds = {"51273577"};
-    static String[] blog = {"kikitaMoon","慕晓燕"};
+    static String[] articleOkIds = {"51258638","51423347"};
+    static String[] blog = {"liufeng1980423","刘锋"};
 
     @Override
     public void process(Page page) {

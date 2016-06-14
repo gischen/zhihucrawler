@@ -83,4 +83,23 @@ public class FileNameExt {
         result.toArray(files);// 集合数组化
         return files;
     }
+
+    public static ArrayList<File> getDirectories(String dirstring)
+    {
+        ArrayList<File> result = new ArrayList<File>();
+        File dir = new File(dirstring);
+
+        if(dir.isDirectory())
+        {
+            File[] fileindirs = dir.listFiles();
+            for (int i = 0; i <fileindirs.length ; i++) {
+                if(fileindirs[i].isDirectory()){
+                    result.add(fileindirs[i]);
+                }
+            }
+        }
+
+        return result;
+    }
+
 }
