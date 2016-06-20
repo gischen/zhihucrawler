@@ -13,37 +13,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 抓取csdn某个博客的全部内容
+ * 通过指定分类代码，提取分类下的所有文章
  */
-public class CsdnBlogCrawler implements PageProcessor {
+public class CsdnBlogByCategoryCrawler implements PageProcessor {
 
-    private static Logger logger = Logger.getLogger(CsdnBlogCrawler.class);
+    private static Logger logger = Logger.getLogger(CsdnBlogByCategoryCrawler.class);
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
-    static String[] articleOkIds = {"51258638","51423347"};
-    static String[] blog = {"liufeng1980423","刘锋"};
+    static String[] articleOkIds = {}; //需要特殊提取的blog id
+    static String[] blog = {"esrichinacd","西南区技术部"};
+    static String  blogNickName = "esricd"; //有的是有两个名字
+    static String[] categories = {"1122220"};
 
     @Override
     public void process(Page page) {
 
-        //http://blog.csdn.net/kikitaMoon/article/list/1
-        String listUrlPattern = "http://blog.csdn.net/"+blog[0]+"/article/list/\\d+";
-
+        //category list
+        String categorylistPattern = "http://blog.csdn.net/" + blogNickName + "/article/category/\\d+/\\d+";
         //http://blog.csdn.net/kikitamoon/article/details/48239807
         String detailUrlPattern = "http://blog.csdn.net/"+blog[0]+"/article/details/\\d+";
 
         //待抓取的detail url
-        List<String> blogDetailUrls = new ArrayList<String>();
         List<String> listUrls = new ArrayList<String>();
+        List<String> categorylistUrls = new ArrayList<String>();
 
-
-        if(page.getHtml().links().regex(listUrlPattern).match()){
-            listUrls = page.getHtml().links().regex(listUrlPattern).all();
+        if(page.getHtml().links().regex(categorylistPattern).match()){
+            categorylistUrls = page.getHtml().links().regex(categorylistPattern).all();
+            page.addTargetRequests(categorylistUrls);
+        }
+        if(page.getHtml().xpath("//*[@id=\"article_list\"]").links().regex(detailUrlPattern).match()) {
+            listUrls = page.getHtml().xpath("//*[@id=\"article_list\"]").links().regex(detailUrlPattern).all();
             page.addTargetRequests(listUrls);
         }
-        if(page.getHtml().links().regex(detailUrlPattern).match()){
-            blogDetailUrls = page.getHtml().links().regex(detailUrlPattern).all();
-            page.addTargetRequests(blogDetailUrls);
-        }
+
         if(page.getUrl().regex(detailUrlPattern).match()){
 
             if(articleOkIds.length != 0) {
@@ -67,7 +68,6 @@ public class CsdnBlogCrawler implements PageProcessor {
                 page.putField("author", blog[1]);
             }
         }
-
     }
 
     @Override
@@ -78,23 +78,20 @@ public class CsdnBlogCrawler implements PageProcessor {
 
     public static void main(String[] args) {
 
-
-        String startUrl = "http://blog.csdn.net/"+blog[0]+"/";
         CsdnBlogPipeline csdnBlogPipeline = new CsdnBlogPipeline();
+        for (int i = 0; i < categories.length; i++) {
 
-        Spider.create(new CsdnBlogCrawler())
-                .addUrl(startUrl)
-                .addPipeline(csdnBlogPipeline)
-                .thread(10)
-                .run();
-
+            //http://blog.csdn.net/esrichinacd/article/category/1306333
+            String categoryStr = "http://blog.csdn.net/" + blog[0] + "/article/category/" + categories[i];
+            Spider.create(new CsdnBlogByCategoryCrawler())
+                    .addUrl(categoryStr)
+                    .addPipeline(csdnBlogPipeline)
+                    .thread(10)
+                    .run();
+        }
         ArrayList<Blogbean> blogs = csdnBlogPipeline.getBlogs();
         Excel excel = new Excel();
-        String filePath = "c:\\Users\\Administrator\\Desktop\\TempTest\\suppportcrawler\\";
+        String filePath = "d:\\test1\\";
         excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
-
-
-
-
     }
 }

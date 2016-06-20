@@ -12,7 +12,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2015/9/14.
+ * 提取简书的单页文章内容
  */
 public class JianshuCrawler implements PageProcessor {
 
