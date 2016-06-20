@@ -86,6 +86,7 @@ public class HtmlTagMaps
         htmlMap.put("&gt;",">");
         htmlMap.put("&lt;","<");
         htmlMap.put("&nbsp;"," ");
+        htmlMap.put("&middot;","    ·");
 
         htmlMap.put("<tr(.*?)>","");
         htmlMap.put("<td(.*?)>","");

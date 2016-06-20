@@ -214,7 +214,6 @@ public class HTML {
 
         Map<String,String> htmlmap = HtmlTagMaps.getHTMLMap();
         htmlmap.put("<p>(.*?)</p>","$1\n");
-        htmlmap.put("&middot;","    ·");
         result = convert(cleanStr,htmlmap);
 
         return result;
