@@ -19,10 +19,11 @@ public class CsdnBlogByCategoryCrawler implements PageProcessor {
 
     private static Logger logger = Logger.getLogger(CsdnBlogByCategoryCrawler.class);
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
-    static String[] articleOkIds = {}; //需要特殊提取的blog id
-    static String[] blog = {"esrichinacd","西南区技术部"};
-    static String  blogNickName = "esricd"; //有的是有两个名字
-    static String[] categories = {"1122220"};
+    //需要特殊提取的blog id
+    static String[] articleOkIds = {};
+    static String[] blog = {"sydbc","东北区技术部"};
+    static String  blogNickName = "sydbc"; //有的是有两个名字
+    static String[] categories = {};
 
     @Override
     public void process(Page page) {

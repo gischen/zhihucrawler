@@ -43,7 +43,7 @@ public class SinaBlogSinglePageCrawler implements PageProcessor {
 
     public static void main(String[] args) {
 
-        String startUrl = "http://blog.sina.com.cn/s/blog_764b1e9d0100vogp.html";
+        String startUrl = "http://blog.sina.com.cn/s/blog_764b1e9d0102wa0m.html";
         SinaBlogPipeline sinaBlogPipeline = new SinaBlogPipeline();
 
         Spider.create(new SinaBlogSinglePageCrawler())
@@ -54,7 +54,7 @@ public class SinaBlogSinglePageCrawler implements PageProcessor {
 
         ArrayList<Blogbean> blogs = sinaBlogPipeline.getBlogs();
         Excel excel = new Excel();
-        String filePath = "c:\\Users\\Administrator\\Desktop\\TempTest\\suppportcrawler\\";
+        String filePath = "d:\\test1\\envi";
         excel.exportBlogToExcel(blogs,filePath,blogOwner+".xls");
 
 

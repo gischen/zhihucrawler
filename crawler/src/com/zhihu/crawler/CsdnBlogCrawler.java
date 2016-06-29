@@ -19,8 +19,8 @@ public class CsdnBlogCrawler implements PageProcessor {
 
     private static Logger logger = Logger.getLogger(CsdnBlogCrawler.class);
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
-    static String[] articleOkIds = {"51258638","51423347"};
-    static String[] blog = {"liufeng1980423","刘锋"};
+    static String[] articleOkIds = {"51721662","51707584","51567920"};
+    static String[] blog = {"allenlu2008","大虾卢"};
 
     @Override
     public void process(Page page) {
@@ -90,11 +90,7 @@ public class CsdnBlogCrawler implements PageProcessor {
 
         ArrayList<Blogbean> blogs = csdnBlogPipeline.getBlogs();
         Excel excel = new Excel();
-        String filePath = "c:\\Users\\Administrator\\Desktop\\TempTest\\suppportcrawler\\";
+        String filePath = "d:\\test1\\";
         excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
-
-
-
-
     }
 }

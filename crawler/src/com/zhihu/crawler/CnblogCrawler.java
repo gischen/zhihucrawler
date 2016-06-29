@@ -20,8 +20,8 @@ public class CnblogCrawler implements PageProcessor {
 
     private static Logger logger = Logger.getLogger(CsdnBlogCrawler.class);
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
-    static  String[] articleOkIds = {"4950157","4833361","4867251","4976340","5407986"};
-    static String[] blog = {"gis-luq","gis_luq"};
+    static  String[] articleOkIds = {};
+    static String[] blog = {"esrichina","esrichina"};
 
 
     @Override
@@ -103,7 +103,7 @@ public class CnblogCrawler implements PageProcessor {
 
         ArrayList<Blogbean> blogs = cnBlogPipeline.getBlogs();
         Excel excel = new Excel();
-        String filePath = "c:\\Users\\Administrator\\Desktop\\TempTest\\suppportcrawler\\";
+        String filePath = "d:\\test1\\";
         excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
 
     }

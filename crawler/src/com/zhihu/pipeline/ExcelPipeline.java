@@ -107,7 +107,7 @@ public class ExcelPipeline implements Pipeline {
                     }
                     problems.add(kBbean);
                 }
-                if (title.substring(0, length < 10 ? length : 10).toLowerCase().contains("howto")) {
+                if (title.substring(0, length < 10 ? length : 10).toLowerCase().contains("how to")) {
                     KBbean kBbean = new KBbean();
                     kBbean.setTitle(title);
                     try {

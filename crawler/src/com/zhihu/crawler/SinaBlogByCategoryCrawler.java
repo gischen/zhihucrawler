@@ -21,9 +21,10 @@ public class SinaBlogByCategoryCrawler implements PageProcessor {
     private String  userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000).setUserAgent(userAgent);
 
-    //static String[] blog = {"2202796977","刘卓颖","834c03b1"};
-    static String[] categories = {"http://blog.sina.com.cn/s/articlelist_1984634525_11_1.html"};
-    static String[] blog = {"1984634525","ENVI/IDL","764b1e9d"};
+    static String[] categories = {"http://blog.sina.com.cn/s/articlelist_1984634525_12_1.html",
+                                    "http://blog.sina.com.cn/s/articlelist_1984634525_13_1.html"
+                                  };
+    static String[] blog = {"1984634525","ENVIIDL技术殿堂","764b1e9d"};
 
     @Override
     public void process(Page page) {
@@ -35,15 +36,10 @@ public class SinaBlogByCategoryCrawler implements PageProcessor {
         String detailUrlPattern = "^(http://blog.sina.com.cn/s/blog_"+blog[2]+"(\\d{1,}?|\\w{1,}?).html)";
 
         //待抓取的detail url
-        List<String> categorylistUrls = new ArrayList<String>();
         List<String> listUrls = new ArrayList<String>();
 
-        if(page.getHtml().links().regex(listUrlPattern).match()){
-            categorylistUrls = page.getHtml().links().regex(listUrlPattern).all();
-            page.addTargetRequests(categorylistUrls);
-        }
         if(page.getHtml().xpath("//*[@id=\"module_928\"]/div[2]/div[1]/div[1]").links().regex(detailUrlPattern).match()) {
-            listUrls = page.getHtml().xpath("//*[@id=\"article_list\"]").links().regex(detailUrlPattern).all();
+            listUrls = page.getHtml().xpath("//*[@id=\"module_928\"]/div[2]/div[1]/div[1]").links().regex(detailUrlPattern).all();
             page.addTargetRequests(listUrls);
         }
         if(page.getUrl().regex(detailUrlPattern).match()){
@@ -75,7 +71,7 @@ public class SinaBlogByCategoryCrawler implements PageProcessor {
         }
         ArrayList<Blogbean> blogs = sinaBlogPipeline.getBlogs();
         Excel excel = new Excel();
-        String filePath = "c:\\Users\\Administrator\\Desktop\\TempTest\\suppportcrawler\\";
+        String filePath = "d:\\test1\\envi";
         excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
     }
 }

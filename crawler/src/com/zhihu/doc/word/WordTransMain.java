@@ -25,7 +25,7 @@ public class WordTransMain {
         String filePath = "d:\\test";
         File folder = new File(filePath);
         //excel file name
-        String excelName  = "ArcGIS Engine 10.x许可操作手册 ";
+        String excelName  = "ArcGIS Engine中调用地理处理工具（gp工具）的方法与注意事项";
         //document file keyword
         String keyword = "doc";
 

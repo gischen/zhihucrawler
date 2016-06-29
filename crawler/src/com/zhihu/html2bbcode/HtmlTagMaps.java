@@ -46,7 +46,7 @@ public class HtmlTagMaps
         htmlMap.put("<hr(.*?)>", "[hr]");
 
         // h title
-        htmlMap.put("<h1(.*?)>((.*?))</h1>", "[size=30]$2[/size]");
+        htmlMap.put("<h1(.*?)>(.*?)</h1>", "[size=30]$2[/size]");
         htmlMap.put("<h2(.*?)>(.*?)</h2>", "[size=25]$2[/size]");
         htmlMap.put("<h3(.*?)>(.*?)</h3>", "[size=20]$2[/size]");
         htmlMap.put("<h4(.*?)>(.*?)</h4>", "[size=15]$2[/size]");
@@ -58,7 +58,9 @@ public class HtmlTagMaps
         htmlMap.put("<u>(.*?)</u>", "\\[u\\]$1\\[/u\\]");
 
         //li
-        htmlMap.put("<li(.*?)>(.*?)</li>","[*]$2[/*]");
+        //htmlMap.put("<li(.*?)>(.*?)</li>","[*]$2[/*]");
+        htmlMap.put("<li>","[*]");
+        htmlMap.put("</li>","[/*]");
 
         //ol
         htmlMap.put("<ol>", "[list=1]");
@@ -87,6 +89,7 @@ public class HtmlTagMaps
         htmlMap.put("&lt;","<");
         htmlMap.put("&nbsp;"," ");
         htmlMap.put("&middot;","    ·");
+        htmlMap.put("&Oslash;",">>>");
 
         htmlMap.put("<tr(.*?)>","");
         htmlMap.put("<td(.*?)>","");
