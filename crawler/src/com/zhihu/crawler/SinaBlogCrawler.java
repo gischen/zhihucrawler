@@ -21,8 +21,12 @@ public class SinaBlogCrawler implements PageProcessor {
     private String  userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000).setUserAgent(userAgent);
 
-    static String[] blog = {"2202796977","刘卓颖","834c03b1"};
+    static String[] blog = {"1232892954","华南区技术部","497c741a"};
     //static String[] blog = {"1984634525","ENVI/IDL","764b1e9d"};
+
+    static  String titlexpath = "//*[@id=\"t_497c741a0102wilf\"]/text()";  ////*[@id="articlebody"]/div[1]/h2/text()
+    static  String topicxpath = "//*[@id=\"articlebody\"]/div[1]/div[2]/a/text()";  ////*[@id="sina_keyword_ad_area"]/table/tbody/tr/td[2]/a/text()
+    static  String contentxpath = "//*[@id=\"sina_keyword_ad_area2\"]"; ////*[@id="sina_keyword_ad_area2"]
 
     @Override
     public void process(Page page) {
@@ -50,10 +54,10 @@ public class SinaBlogCrawler implements PageProcessor {
 
         }
         if(page.getUrl().regex(detailUrlPattern).match()){
-
-            page.putField("title",page.getHtml().xpath("//*[@id=\"articlebody\"]/div[1]/h2/text()"));
-            page.putField("topic",page.getHtml().xpath("//*[@id=\"sina_keyword_ad_area\"]/table/tbody/tr/td[2]/a/text()"));
-            page.putField("content",page.getHtml().xpath("//*[@id=\"sina_keyword_ad_area2\"]"));
+            String tempStr = page.getUrl().toString().substring(page.getUrl().toString().indexOf("_")+1,47);
+            page.putField("title",page.getHtml().xpath("//*[@id=t_"+tempStr+"]/text()"));
+            page.putField("topic",page.getHtml().xpath(topicxpath));
+            page.putField("content",page.getHtml().xpath(contentxpath));
             page.putField("source",page.getUrl());
             page.putField("author",blog[1]);
 
@@ -80,11 +84,8 @@ public class SinaBlogCrawler implements PageProcessor {
 
         ArrayList<Blogbean> blogs = sinaBlogPipeline.getBlogs();
         Excel excel = new Excel();
-        String filePath = "c:\\Users\\Administrator\\Desktop\\TempTest\\suppportcrawler\\";
+        String filePath = "d:\\test1";
         excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
-
-
-
 
     }
 }
