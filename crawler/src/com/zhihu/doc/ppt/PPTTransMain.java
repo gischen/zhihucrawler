@@ -19,11 +19,11 @@ public class PPTTransMain {
     public static void main(String[] args) {
 
         //ppt image folder location
-        String filePath = "d:/test";
+        String filePath = "C:\\Users\\Esri\\Desktop\\qq";
         ArrayList<File> dirs = FileNameExt.getDirectories(filePath);
 
-        String authorName = "穆天龙";
-        String topic = "ArcGIS Python";
+        String authorName = "马克玲";
+        String topic = "ArcGIS 10.5";
 
         for (File dir: dirs) {
 

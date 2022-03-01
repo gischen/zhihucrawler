@@ -11,7 +11,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Calendar;
 /**
  * 根据分类代码，抓取sina博客站点的部分文章
  */
@@ -72,6 +72,6 @@ public class SinaBlogByCategoryCrawler implements PageProcessor {
         ArrayList<Blogbean> blogs = sinaBlogPipeline.getBlogs();
         Excel excel = new Excel();
         String filePath = "d:\\test1\\envi";
-        excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
+        excel.exportBlogToExcel(blogs,filePath,blog[0]+Calendar.getInstance().get(Calendar.YEAR)+(Calendar.getInstance().get(Calendar.MONTH)+1)+Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+Calendar.getInstance().get(Calendar.MINUTE)+Calendar.getInstance().get(Calendar.SECOND)+".xls");
     }
 }

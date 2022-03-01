@@ -131,7 +131,7 @@ public class SupportNewPipeline implements Pipeline {
                     try {
                         String con = HTML.newSupporthtml2bbcode(resultItems.get("content").toString(),baseurl,temppath,errorsrc);
                         kBbean.setType("bug");
-                        String source = "\n【[b]原文链接[/b]】\n"+ resultItems.get("sourceUrl");
+                        String source = "\n\n【[b]原文链接[/b]】\n"+ resultItems.get("sourceUrl");
                         kBbean.setSource(source);
                         con = con + source;
                         kBbean.setContent(con);

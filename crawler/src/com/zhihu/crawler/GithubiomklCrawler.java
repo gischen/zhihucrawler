@@ -2,7 +2,7 @@ package com.zhihu.crawler;
 
 import com.zhihu.bean.Blogbean;
 import com.zhihu.pipeline.GithubioPipeline;
-import com.zhihu.pipeline.IteyePipeline;
+import com.zhihu.pipeline.GithubmklPipeline;
 import com.zhihu.util.Excel;
 import org.apache.log4j.Logger;
 import us.codecraft.webmagic.Page;
@@ -12,27 +12,35 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
 /**
  * 提取githubio建立的博客单页文章内容
  */
-public class GithubioCrawler implements PageProcessor {
+public class GithubiomklCrawler implements PageProcessor {
 
-    private static Logger logger = Logger.getLogger(GithubioCrawler.class);
-    private Site site = Site.me().setRetryTimes(5).setSleepTime(1000)
-    .setUserAgent("Mozilla/5.0 (compatible; BoxBrowserTest/4.x; Linux) CSSBox/4.x (like Gecko)").setRetryTimes(5).setSleepTime(1000);
-
-    static String[] articleOkIds = {"2018/08/13/vectorTileBundle/"};
-    static String author = "慕晓燕";
+    private static Logger logger = Logger.getLogger(GithubiomklCrawler.class);
+    private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
+    static String[] articleOkIds = {"bigdata/3752b673.html"};
+    static String author = "马克玲";
 
     @Override
     public void process(Page page) {
 
         if (page != null) {
             String tempStr = getSubStr(page.getUrl().toString(),2).replace("/","");
-            page.putField("title", page.getHtml().xpath("//*[@class=post-title]/text()"));
-//            System.out.println("//*[@id=\"post-"+tempStr+"\"]/div/header/h1/text()");
+            page.putField("title", page.getHtml().xpath("//*[@class=post-heading]/h1/text()"));
+            System.out.println(page.getHtml().xpath("//*[@class=post-heading]/h1/text()"));
             page.putField("topic", "");
-            page.putField("content", page.getHtml().xpath("//*[@class=post-content]"));
+            String ss=page.getHtml().xpath("//*[@class=post-container]").toString();
+            if(page.getHtml().xpath("//*[@class=previous]").toString()!= null){
+                ss=ss.replace(page.getHtml().xpath("//*[@class=previous]").toString(),"");
+            }
+            if(page.getHtml().xpath("//*[@class=next]").toString()!= null){
+                ss=ss.replace(page.getHtml().xpath("//*[@class=next]").toString(),"");
+            }
+            page.putField("content", ss);
+            System.out.println(ss);
+//            System.out.println(page.getHtml().xpath("//*[@class=pager]"));
             page.putField("source", page.getUrl());
             page.putField("author", author);
         }
@@ -47,17 +55,17 @@ public class GithubioCrawler implements PageProcessor {
 
         //http://oopsliu.github.io/2016/06/01/dev2016/
 
-        String startUrl = "http://kikitamap.com/";
+        String startUrl = "https://makeling.github.io/";
         ArrayList<Blogbean> blogs = new ArrayList<Blogbean>();
 
         for (int i = 0; i < articleOkIds.length; i++) {
-            GithubioPipeline githubioPipeline = new GithubioPipeline();
-            Spider.create(new GithubioCrawler())
+            GithubmklPipeline GithubmklPipeline = new GithubmklPipeline();
+            Spider.create(new GithubiomklCrawler())
                     .addUrl(startUrl+articleOkIds[i])
-                    .addPipeline(githubioPipeline)
+                    .addPipeline(GithubmklPipeline)
                     .thread(10)
                     .run();
-             blogs.add(githubioPipeline.getBlogbean());
+             blogs.add(GithubmklPipeline.getBlogbean());
         }
 
         Excel excel = new Excel();

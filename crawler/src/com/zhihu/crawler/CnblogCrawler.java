@@ -12,7 +12,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Calendar;
 /**
  * Created by Administrator on 2015/11/26.
  */
@@ -20,8 +20,8 @@ public class CnblogCrawler implements PageProcessor {
 
     private static Logger logger = Logger.getLogger(CsdnBlogCrawler.class);
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000);
-    static  String[] articleOkIds = {};
-    static String[] blog = {"esrichina","esrichina"};
+    static  String[] articleOkIds = {"9210939"};
+    static String[] blog = {"gis-luq","gis_luq"};
 
 
     @Override
@@ -104,7 +104,7 @@ public class CnblogCrawler implements PageProcessor {
         ArrayList<Blogbean> blogs = cnBlogPipeline.getBlogs();
         Excel excel = new Excel();
         String filePath = "d:\\test1\\";
-        excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
+        excel.exportBlogToExcel(blogs,filePath,blog[0]+Calendar.getInstance().get(Calendar.YEAR)+(Calendar.getInstance().get(Calendar.MONTH)+1)+Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+Calendar.getInstance().get(Calendar.MINUTE)+Calendar.getInstance().get(Calendar.SECOND)+".xls");
 
     }
 }
