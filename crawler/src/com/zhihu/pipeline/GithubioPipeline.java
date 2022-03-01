@@ -71,12 +71,22 @@ public class GithubioPipeline implements Pipeline {
         this.blogs = blogs;
     }
 
+    Blogbean blogbean = new Blogbean();
+
+    public Blogbean getBlogbean() {
+        return blogbean;
+    }
+
+    public void setBlogbean(Blogbean blogbean) {
+        this.blogbean = blogbean;
+    }
+
     @Override
     public void process(ResultItems resultItems, Task task) {
         if(resultItems.get("title") != null){
             String title = resultItems.get("title").toString();
             if (title != null) {
-                Blogbean blogbean = new Blogbean();
+
                 blogbean.setTitle(title);
                 try {
                     String topic = resultItems.get("topic").toString();
@@ -84,7 +94,7 @@ public class GithubioPipeline implements Pipeline {
 
                     String content = HTML.html2bbcode(resultItems.get("content").toString(),baseurl,temppath,errorsrc);
                     String articleSource = resultItems.get("source").toString();
-                    content += "\n[b]文章来源：[/b]"+"[url="+articleSource+"]"+articleSource+"[/url]";
+                    content += "\n\n[b]文章来源：[/b]"+"[url="+articleSource+"]"+articleSource+"[/url]";
                     blogbean.setContent(content);
                     blogbean.setSource(resultItems.get("source").toString());
                     blogbean.setAuthor(resultItems.get("author").toString());
@@ -93,7 +103,7 @@ public class GithubioPipeline implements Pipeline {
                     logger.info(e);
                     e.printStackTrace();
                 }
-                blogs.add(blogbean);
+
             }
         }
     }

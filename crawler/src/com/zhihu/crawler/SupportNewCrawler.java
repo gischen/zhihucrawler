@@ -16,7 +16,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Calendar;
 /**
  * Created by Administrator on 2015/9/6.
  */
@@ -112,7 +112,7 @@ public class SupportNewCrawler implements PageProcessor {
         Spider.create(new SupportNewCrawler())
                 .addUrl(kbUrl)
                 .addPipeline(supportNewPipeline)
-                .setDownloader(new SupportDownloader("d:\\APP\\chromedriver\\chromedriver220.exe").setSleepTime(3000))
+                .setDownloader(new SupportDownloader("D:\\chromedriver.exe").setSleepTime(3000))
                 .thread(10)
                 .run();
         logger.info("================================+++++++++++++++++++++++++++================================");

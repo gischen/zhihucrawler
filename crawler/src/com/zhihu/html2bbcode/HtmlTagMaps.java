@@ -12,22 +12,31 @@ public class HtmlTagMaps
     public static Map<String, String> getHTMLMap()
     {
         Map<String, String> htmlMap = new HashMap<String, String>();
+//        htmlMap.put("<pre(.*?)>(.*?)</pre>","[code]$2[/code]");
+//        htmlMap.put("<pre class=\"python\">","[code]");
 
+//        htmlMap.put("<br /><br />","");
         htmlMap.put("<a(.*?)href=\"(.*?)\"(.*?)>(.*?)</a>","[url=$2]$4[/url]");
-        htmlMap.put("<a>","");//新浪
-        htmlMap.put("</a>","");//新浪
+//        htmlMap.put("<a>","");//新浪
+//        htmlMap.put("</a>","");//新浪
         htmlMap.put("<a></a>","");
 
         htmlMap.put("<img(.*?)src=\"(.*?)\"(.*?)>","[img]$2[/img]");
-        htmlMap.put("<br(.*?)>", "");
+
+        htmlMap.put("<br(.*?)>", "\n");
 
         //blockquote
+
         htmlMap.put("<blockquote>", "\\[quote\\]");
         htmlMap.put("</blockquote>", "\\[/quote\\]");
+        htmlMap.put("\\[quote\\] \n", "\\[quote\\]");
+        htmlMap.put("\\[code\\] \n", "\\[code\\]");
 
         //code
-        htmlMap.put("<code>", "[code]");
-        htmlMap.put("</code>", "[/code]");
+//        htmlMap.put("<code>", "[code]");
+//        htmlMap.put("</code>", "[/code]");
+        htmlMap.put("<figure>", "[figure]");
+        htmlMap.put("</figure>", "[/figure]");
 
         //dl dt dd
         htmlMap.put("<dl>", "[list]");
@@ -46,12 +55,12 @@ public class HtmlTagMaps
         htmlMap.put("<hr(.*?)>", "[hr]");
 
         // h title
-        htmlMap.put("<h1(.*?)>(.*?)</h1>", "[size=30]$2[/size]");
-        htmlMap.put("<h2(.*?)>(.*?)</h2>", "[size=25]$2[/size]");
-        htmlMap.put("<h3(.*?)>(.*?)</h3>", "[size=20]$2[/size]");
-        htmlMap.put("<h4(.*?)>(.*?)</h4>", "[size=15]$2[/size]");
-        htmlMap.put("<h5(.*?)>(.*?)</h5>", "[size=10]$2[/size]");
-        htmlMap.put("<h6(.*?)>(.*?)</h6>", "[size=5]$2[/size]");
+        htmlMap.put("<h1(.*?)>(.*?)</h1>", "\n[size=30][b]$2[/b][/size]\n");
+        htmlMap.put("<h2(.*?)>(.*?)</h2>", "\n[size=25][b]$2[/b][/size]\n");
+        htmlMap.put("<h3(.*?)>(.*?)</h3>", "\n[size=20][b]$2[/b][/size]\n");
+        htmlMap.put("<h4(.*?)>(.*?)</h4>", "\n[size=15][b]$2[/b][/size]\n");
+        htmlMap.put("<h5(.*?)>(.*?)</h5>", "\n[size=10][b]$2[/b][/size]\n");
+        htmlMap.put("<h6(.*?)>(.*?)</h6>", "\n[size=5][b]$2[/b][/size]\n");
 
         // italic
         htmlMap.put("<i>(.*?)</i>", "\\[i\\]$1\\[/i\\]");
@@ -69,16 +78,27 @@ public class HtmlTagMaps
         //p
         htmlMap.put("<p>(.*?)</p>","$1");
 
+
         //pre
-        htmlMap.put("<pre>", "");
-        htmlMap.put("</pre>", "");
+//        htmlMap.put("<pre>", "");
+//        htmlMap.put("<pre>", "");
+//        htmlMap.put("<br /></pre>", "");
+//        htmlMap.put("</pre>", "");
+
+        //下角标
+        htmlMap.put("<sub>", "");
+        htmlMap.put("</sub>", "");
+
+        //上角标
+        htmlMap.put("<sup>", "");
+        htmlMap.put("</sup>", "");
 
         //strong
         htmlMap.put("<strong>(.*?)</strong>", "[b]$1[/b]");
         htmlMap.put("<b>(.*?)</b>", "\\[b\\]$1\\[/b\\]");
 
         //span
-        htmlMap.put("<span(.*?)>(.*?)</span>", "\\[b\\]$2\\[/b\\]");
+       // htmlMap.put("<span(.*?)>(.*?)</span>", "\\[b\\]$2\\[/b\\]");
 
         //ul
         htmlMap.put("<ul(.*?)>", "[list]");
@@ -89,16 +109,34 @@ public class HtmlTagMaps
         htmlMap.put("&lt;","<");
         htmlMap.put("&nbsp;"," ");
         htmlMap.put("&middot;","    ·");
-        htmlMap.put("&Oslash;",">>>");
+        htmlMap.put("&Oslash;","    >>>");
+        htmlMap.put("&sup2;","    >>>");
+        htmlMap.put("&sect; ","    >>>");
+        htmlMap.put("&micro;","µ");
+        htmlMap.put("&amp;","&");
+        htmlMap.put("&deg;","°");
+        htmlMap.put("&times;","×");
+        htmlMap.put("&uuml;","    >>>");
+        htmlMap.put("&agrave;","→");
+        htmlMap.put("&plusmn;","±");
+//        htmlMap.put("<table><tbody><tr><td>(.*?)</td><td>(.*?)</td></tr></tbody></table>","[code]$2[/code]");
+//        htmlMap.put("<tr(.*?)>","");
+//        htmlMap.put("<td(.*?)>","[code]");
+//        htmlMap.put("</tr>","");
+//        htmlMap.put("</td>","[/code]");
+//        htmlMap.put("<table>","");
+//        htmlMap.put("<tbody>","");
+//        htmlMap.put("</table>","");
+//        htmlMap.put("</tbody>","");
 
-        htmlMap.put("<tr(.*?)>","");
-        htmlMap.put("<td(.*?)>","");
 
         htmlMap.put("<textarea(.*?)>(.*?)</textarea>","[code]$2[/code]");
 
+
+
         // videos
         htmlMap.put("<video(.*?)src=\"(.*?)\"(.*?)>", "[video]$2[/video\\]");
-
+//        htmlMap.put(" \\n\\n","\n");
         return htmlMap;
     }
 }

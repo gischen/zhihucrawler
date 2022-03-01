@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Administrator on 2016/3/4.
@@ -22,10 +23,10 @@ public class WordTransMain {
         ArrayList<Blogbean> blogs = new ArrayList<Blogbean>();
 
         //word document location,new excel file location
-        String filePath = "d:\\test";
+        String filePath = "C:\\Users\\Yue\\Desktop\\xk";
         File folder = new File(filePath);
         //excel file name
-        String excelName  = "ArcGIS Engine中调用地理处理工具（gp工具）的方法与注意事项";
+        String excelName  = "文章";
         //document file keyword
         String keyword = "doc";
 
@@ -39,7 +40,7 @@ public class WordTransMain {
         }
 
         Excel excel = new Excel();
-        excel.exportBlogToExcel(blogs,filePath, excelName+".xls");
+        excel.exportBlogToExcel(blogs,filePath, excelName+ Calendar.getInstance().get(Calendar.YEAR)+(Calendar.getInstance().get(Calendar.MONTH)+1)+Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+Calendar.getInstance().get(Calendar.MINUTE)+Calendar.getInstance().get(Calendar.SECOND)+".xls");
 
         logger.info("======"+folder+" all documents Transform ok! and excel is ok! and excel paht is "+filePath+excelName+".xls");
     }

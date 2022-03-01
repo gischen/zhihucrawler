@@ -359,7 +359,7 @@ public class ExcelPipeline implements Pipeline {
                         kBbean.setType("index");
                         String tabStr = Filter.filter(resultItems.get("software").toString());
                         kBbean.setTag(tabStr + "Index");
-                        String source = "\n【[b]原文链接[/b]】\n"
+                        String source = "\n\n【[b]原文链接[/b]】\n"
                                 + resultItems.get("sourceUrl");
                         kBbean.setSource(source);
 

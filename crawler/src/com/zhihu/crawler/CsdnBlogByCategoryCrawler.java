@@ -11,7 +11,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Calendar;
 /**
  * 通过指定分类代码，提取分类下的所有文章
  */
@@ -93,6 +93,6 @@ public class CsdnBlogByCategoryCrawler implements PageProcessor {
         ArrayList<Blogbean> blogs = csdnBlogPipeline.getBlogs();
         Excel excel = new Excel();
         String filePath = "d:\\test1\\";
-        excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
+        excel.exportBlogToExcel(blogs,filePath,blog[0]+Calendar.getInstance().get(Calendar.YEAR)+(Calendar.getInstance().get(Calendar.MONTH)+1)+Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+Calendar.getInstance().get(Calendar.MINUTE)+Calendar.getInstance().get(Calendar.SECOND)+".xls");
     }
 }

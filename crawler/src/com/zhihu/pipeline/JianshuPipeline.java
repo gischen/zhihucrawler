@@ -21,7 +21,7 @@ public class JianshuPipeline implements Pipeline {
     private static Logger logger = Logger.getLogger(JianshuPipeline.class);
     private Properties properties = new Properties();
     String temppath = "";
-    String baseurl = "http://blog.csdn.net/";
+    String baseurl = "http://www.jianshu.com/";
     String imgparas = "";
     String errorsrc = "";
 
@@ -84,7 +84,7 @@ public class JianshuPipeline implements Pipeline {
 
                     String content = HTML.html2bbcode(resultItems.get("content").toString(),baseurl,temppath,errorsrc);
                     String articleSource = resultItems.get("source").toString();
-                    content += "\n[b]文章来源：[/b]"+"[url="+articleSource+"]"+articleSource+"[/url]";
+                    content += "\n\n[b]文章来源：[/b]"+"[url="+articleSource+"]"+articleSource+"[/url]";
                     blogbean.setContent(content);
                     blogbean.setSource(resultItems.get("source").toString());
                     blogbean.setAuthor(resultItems.get("author").toString());

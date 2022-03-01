@@ -37,7 +37,7 @@ public class SupportNewSinglePageCrawler implements PageProcessor {
     public void process(Page page) {
 
         if(page != null) {
-            String title = page.getHtml().xpath("//*[@id=\"wrapper\"]/div[4]/div/div[3]/section[1]/h1/text()").toString().trim();
+            String title = page.getHtml().xpath("//*[@id=\"wrapper\"]/div[6]/div/div/div[3]/section[1]/h1/text()").toString().trim();
             int length = title.length();
             if (title.substring(0, length < 10 ? length : 10).toLowerCase().contains("problem")) {
                 page.putField("title", title);
@@ -71,7 +71,7 @@ public class SupportNewSinglePageCrawler implements PageProcessor {
             }
             if (title.substring(0, length < 10 ? length : 10).toLowerCase().contains("error")) {
                 page.putField("title", title);
-                String contentStr = page.getHtml().xpath("//*[@id=\"wrapper\"]/div[4]/div/div[3]").toString();
+                String contentStr = page.getHtml().xpath("//*[@id=\"wrapper\"]/div[6]/div/div/div[3]").toString();
                 Document doc = Jsoup.parse(contentStr);
                 doc.getElementsByClass("text-blue").remove(); //注意，这个有些特殊
                 doc.getElementsByClass("source-link").append("<br>");
@@ -81,7 +81,7 @@ public class SupportNewSinglePageCrawler implements PageProcessor {
             }
             if (title.substring(0, length < 10 ? length : 10).toLowerCase().contains("bug")) {
                 page.putField("title", title);
-                String contentStr = page.getHtml().xpath("//*[@id=\"wrapper\"]/div[4]/div/div[3]").toString();
+                String contentStr = page.getHtml().xpath("//*[@id=\"wrapper\"]/div[6]/div/div/div[3]").toString();
                 Document doc = Jsoup.parse(contentStr);
                 doc.getElementsByClass("atricle-headline").remove();
                 doc.getElementsByClass("source-link").append("<br>");

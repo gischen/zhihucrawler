@@ -64,6 +64,7 @@ public class HTML {
         Whitelist whitelist = new Whitelist()
                 .addTags(basictags).addTags(additionaltags).addTags(tabletags)
                 .addAttributes("a", new String[]{"href"})
+                .addAttributes("td",new String[]{"class"})
                 .addAttributes("img",new String[]{"src"})
                 .addAttributes("blockquote", new String[]{"cite"})
                 .addAttributes("q", new String[]{"cite"})
@@ -80,41 +81,91 @@ public class HTML {
 
         //选择出table，然后替换成img标签
         Document doc = Jsoup.parse(contentStr);
+//        doc=doc.remove(doc.getElementsByTag("td").attr("class", "gutter");
         Elements tables = doc.getElementsByTag("table");
+
         for (int i = 0; i < tables.size() ; i++) {
             Element table = tables.get(i);
+//            System.out.println(table.getElementsByAttributeValueMatching("class", "code").toString());
+            if (!(table.getElementsByAttributeValueMatching("class", "code").toString().contains("code"))) {
 
-            final HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
-            imageGenerator.loadHtml(table.outerHtml());
+                final HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
+                imageGenerator.loadHtml(table.outerHtml());
 
-            String fileName = UUID.randomUUID().toString()+".png";
-            imageGenerator.saveAsImage(filePath + fileName);
+                String fileName = UUID.randomUUID().toString() + ".png";
+                imageGenerator.saveAsImage(filePath + fileName);
 
-            String imageurl = "";
-            try {
-                File file = new File(filePath+fileName);
-                InputStream in = new FileInputStream(file);
-                byte b[]=new byte[(int)file.length()];
-                in.read(b);
-                in.close();
-                imageurl = fu.fileUpload(uploadManager, b, fileName, null, "image/png");
-            }catch (Exception e){
-                e.printStackTrace();
+                String imageurl = "";
+                try {
+                    File file = new File(filePath + fileName);
+                    InputStream in = new FileInputStream(file);
+                    byte b[] = new byte[(int) file.length()];
+                    in.read(b);
+                    in.close();
+                    imageurl = fu.fileUpload(uploadManager, b, fileName, null, "image/png");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //upload and return imageurl
+                String imgtag = "<img src=\"" + imageurl + "\" />";
+                table.after(imgtag);
+                table.remove();
+            }else{
+//                System.out.println("[code]"+table.childNode(1).childNode(1).childNodes().get(3).toString()+"[/code]");
+//                System.out.println("[code]"+table.childNode(1).childNode(1).childNodes().get(3).toString().replaceAll("<td class=\"code\"><pre><span class=\"line\">","")+"[/code]");
+                System.out.println(table.childNode(1).childNode(1).childNodes().get(3));
+                table.after("[code]"+table.childNode(1).childNode(1).childNodes().get(3)+"[/code]");
+                table.remove();
+//                System.out.println(table.childNode(1).childNode(1).childNodes().get(3));
             }
-
-            //upload and return imageurl
-            String imgtag = "<img src=\""+imageurl+"\" />";
-            table.after(imgtag);
-            table.remove();
         }
-
         //deal with image
         Elements images = doc.getElementsByTag("img");
+        System.out.println(images);
         for (int i = 0; i < images.size() ; i++) {
             Element img = images.get(i);
-            String oldsrc = img.attr("src");
+
+            String oldsrc = img.attr("src").toString().replace("-kikitaMaps", "");
+            System.out.println(oldsrc);
+            String immgg=img.toString();
+            if(immgg.contains("upload-images.jianshu.io")){
+                oldsrc= "http:"+img.attr("data-original-src");
+            }
+//            if(!immgg.contains("http")){
+//                oldsrc= img.attr("src").toString().replace("//", "");
+//            }
+            System.out.println(oldsrc);
+//            if(oldsrc.contains("upload-images.jianshu.io")){
+//                oldsrc="http:"+img.attr("src").substring(0, img.attr("src").lastIndexOf("?imageMogr"));
+//            }
             String key = "";
             String subfix = "";
+
+            if(img.attr("data-src").contains("mmbiz.qpic.cn")&&img.attr("data-src").contains("wx_fmt=")){
+                oldsrc=img.attr("data-src")+"."+img.attr("data-src").split("wx_fmt=")[1];
+                System.out.println(oldsrc);
+            }
+            if(img.attr("data-src").contains("mmbiz.qpic.cn")){
+                oldsrc=img.attr("data-src")+".jpg";
+                System.out.println(oldsrc);
+            }
+
+            if(img.attr("data-src").contains("mmbiz.qlogo.cn")){
+                oldsrc=img.attr("data-src")+"."+img.attr("data-src").split("wx_fmt=")[1];
+                //System.out.println(oldsrc);
+            }
+            if(!img.attr("data-src").contains("mmbiz.qpic.cn")&&img.attr("src").contains("mmbiz.qlogo.cn")){
+                oldsrc=img.attr("src")+"."+img.attr("src").split("wx_fmt=")[1];
+                System.out.println(oldsrc);
+            }
+
+//            if(oldsrc.contains("clouddn.com")){
+//                System.out.println(oldsrc);
+//                key=UUID.randomUUID().toString()+key.substring(key.lastIndexOf("."));
+//                System.out.println(key);
+//
+//            }
 
             if(oldsrc.contains("simg.sinajs.cn")){ //处理新浪博客的图片链接
                 oldsrc = img.attr("real_src");
@@ -128,8 +179,26 @@ public class HTML {
                 }
             }else{
                 int start1 = oldsrc.lastIndexOf("/");
+
                 int startdot = oldsrc.lastIndexOf(".");
-                if(start1 >0 && startdot >0 && startdot>start1) {
+                if(img.attr("data-src").contains("mmbiz.qpic.cn")&&img.attr("data-src").contains("wx_fmt=")) {
+                    subfix = oldsrc.split("\\/")[4];
+                    System.out.println(subfix);
+                    key = subfix+"."+img.attr("data-src").split("wx_fmt=")[1];
+                }else if(img.attr("data-src").contains("mmbiz.qpic.cn")) {
+                    subfix = oldsrc.split("\\/")[4];
+                    System.out.println(subfix);
+                    key = subfix+".jpg";
+                }
+                else if(img.attr("data-src").contains("mmbiz.qlogo.cn")) {
+                    subfix = oldsrc.split("\\/")[4];
+                    System.out.println(subfix);
+                    key = subfix+"."+img.attr("data-src").split("wx_fmt=")[1];
+                }else if(!img.attr("data-src").contains("mmbiz.qpic.cn")&&img.attr("src").contains("mmbiz.qlogo.cn")) {
+                    subfix = oldsrc.split("\\/")[4];
+                    System.out.println(subfix);
+                    key = subfix+"."+img.attr("src").split("wx_fmt=")[1];
+                }else if(start1 >0 && startdot >0 && startdot>start1) {
                     subfix = oldsrc.substring(start1 + 1);
                     key = subfix;
                 }else if(start1 > 0){
@@ -138,7 +207,12 @@ public class HTML {
                 }
             }
 
-            String newsrc = fu.filefetch(oldsrc,key);
+//            String newsrc = fu.filefetch(img.attr("src"),key);
+            System.out.println(oldsrc);
+            System.out.println(key);
+
+            String newsrc = fu.filefetch(oldsrc, key);//如果上传出问题，取消这个注释，并注释上一行}
+            System.out.println(key);
             System.out.println("====img====图片上传返回的URL:"+newsrc);
 
             if(newsrc.equals("")){
@@ -168,12 +242,39 @@ public class HTML {
                 atag.removeAttr("href");
             }
         }
-
+        if(doc.getElementsByAttributeValue("class","dp-highlighter").toString().contains("dp-highlighter")){
+            doc.getElementsByAttributeValue("class","dp-highlighter").after("[code]"+doc.getElementsByAttributeValue("class","dp-highlighter")+"[/code]");
+            doc.getElementsByAttributeValue("class","dp-highlighter").remove();
+        }
+//        System.out.println(doc.html().replaceAll("<pre class=\"(.*?)\">","[code]"));
+//        String docc;
+//        if(baseUri.contains("csdn")){
+//            docc=doc.html().replaceAll("<pre class=\"(.*?)\">","[code]").replaceAll("</pre>","[/code]");
+//        }else{
+//            docc=doc.html();
+//        }
         String cleanStr = Jsoup.clean(doc.html(), uri, whitelist, outputSettings);
-
+        if(baseUri.contains("csdn")){
+            cleanStr=cleanStr.replaceAll("<pre>","").replaceAll("</pre>","");
+        }
+//        System.out.println(cleanStr);
         Map<String,String> htmlmap = HtmlTagMaps.getHTMLMap();
+        if(contentStr.contains("highlight javascript")){
+        htmlmap.put("<code>", "[b]");
+        htmlmap.put("</code>", "[/b]");
+        }else if(baseUri.contains("makeling")){
+            htmlmap.put("<pre>", "");
+            htmlmap.put("</pre>", "");
+        }else if(baseUri.contains("csdn")){
+//            htmlmap.put("[b][b]", "[b]");
+//            htmlmap.put("[/b][/b]", "[/b]");
+            htmlmap.put("<code>", "[code]");
+            htmlmap.put("</code>", "[/code]");
+        }else{
+            htmlmap.put("<code>", "[code]");
+            htmlmap.put("</code>", "[/code]");
+        }
         String result = convert(cleanStr,htmlmap);
-
         return result;
     }
 
@@ -214,7 +315,9 @@ public class HTML {
 
         Map<String,String> htmlmap = HtmlTagMaps.getHTMLMap();
         htmlmap.put("<p>(.*?)</p>","$1\n");
+
         result = convert(cleanStr,htmlmap);
+
 
         return result;
     }
@@ -334,7 +437,7 @@ public class HTML {
         htmlmap.put("<pre>","[quote]");
         htmlmap.put("</pre>","[/quote]");
         String result = convert(cleanStr,htmlmap);
-
+        System.out.println(result);
         return result;
     }
 

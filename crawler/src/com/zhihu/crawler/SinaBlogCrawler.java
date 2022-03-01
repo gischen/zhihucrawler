@@ -11,7 +11,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Calendar;
 /**
  * 抓取sina某个博客的全部文章
  */
@@ -21,7 +21,7 @@ public class SinaBlogCrawler implements PageProcessor {
     private String  userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
     private Site site = Site.me().setRetryTimes(5).setSleepTime(1000).setUserAgent(userAgent);
 
-    static String[] blog = {"1232892954","华南区技术部","497c741a"};
+    static String[] blog = {"1984634525","ENVIIDL技术殿堂","764b1e9d"};
     //static String[] blog = {"1984634525","ENVI/IDL","764b1e9d"};
 
     static  String titlexpath = "//*[@id=\"t_497c741a0102wilf\"]/text()";  ////*[@id="articlebody"]/div[1]/h2/text()
@@ -85,7 +85,7 @@ public class SinaBlogCrawler implements PageProcessor {
         ArrayList<Blogbean> blogs = sinaBlogPipeline.getBlogs();
         Excel excel = new Excel();
         String filePath = "d:\\test1";
-        excel.exportBlogToExcel(blogs,filePath,blog[0]+".xls");
+        excel.exportBlogToExcel(blogs,filePath,blog[0]+Calendar.getInstance().get(Calendar.YEAR)+(Calendar.getInstance().get(Calendar.MONTH)+1)+Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+Calendar.getInstance().get(Calendar.MINUTE)+Calendar.getInstance().get(Calendar.SECOND)+".xls");
 
     }
 }

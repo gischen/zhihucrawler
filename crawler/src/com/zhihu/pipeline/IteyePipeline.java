@@ -84,7 +84,7 @@ public class IteyePipeline implements Pipeline {
 
                     String content = HTML.html2bbcode(resultItems.get("content").toString(),baseurl,temppath,errorsrc);
                     String articleSource = resultItems.get("source").toString();
-                    content += "\n[b]文章来源：[/b]"+"[url="+articleSource+"]"+articleSource+"[/url]";
+                    content += "\n\n[b]文章来源：[/b]"+"[url="+articleSource+"]"+articleSource+"[/url]";
                     blogbean.setContent(content);
                     blogbean.setSource(resultItems.get("source").toString());
                     blogbean.setAuthor(resultItems.get("author").toString());
